@@ -6,31 +6,51 @@ import {
     Card,
     CardBody,
     Form,
-    Button
+    Button,
+    UncontrolledAlert
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
+import isEmpty from 'lodash/isEmpty';
 import LoginInput from './LoginInput.component';
 
 const Login = (props) => {
-    const { handleSubmit, onSignIn, submitting } = props;
+    const {
+        signin: {
+            loading,
+            isAuthenticated,
+            error
+        },
+        handleSubmit,
+        onSignIn } = props;
+
+    const { from } = props.location.state || { from: { pathname: "/" } };
+
+    if (isAuthenticated) return <Redirect to={from} />
 
     return (
         <section className="signin py-3">
             <Container>
                 <Row>
                     <Col md="6" className="mx-auto my-5">
-                        <Card>
+                        <Card className="shadow">
                             <CardBody>
                                 <h1 className="display-5 text-center">Sign In</h1>
                                 <p className="lead text-center">Sign in to your account</p>
 
-                                <Form noValidate onSubmit={handleSubmit(onSignIn)} className="form-signin" autoComplete="off">
+                                {!isEmpty(error) ? (
+                                    <UncontrolledAlert color="danger">
+                                        {error}
+                                    </UncontrolledAlert>
+                                ) : null}
+
+                                <Form onSubmit={handleSubmit(onSignIn)} noValidate className="form-signin" autoComplete="off">
                                     <Field
                                         type="email"
                                         name="email"
                                         bsSize="lg"
                                         placeholder="Email"
-                                        disabled={submitting}
+                                        disabled={loading}
                                         component={LoginInput} />
 
                                     <Field
@@ -38,10 +58,10 @@ const Login = (props) => {
                                         name="password"
                                         bsSize="lg"
                                         placeholder="Password"
-                                        disabled={submitting}
+                                        disabled={loading}
                                         component={LoginInput} />
 
-                                    <Button type="submit" color="info" disabled={submitting} block>{submitting ? 'Signing In...' : 'Sign In'}</Button>
+                                    <Button type="submit" color="info" disabled={loading} block>{loading ? 'Signing In...' : 'Sign In'}</Button>
                                 </Form>
                             </CardBody>
                         </Card>

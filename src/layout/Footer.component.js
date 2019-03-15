@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container } from 'reactstrap';
-import './Footer.css';
+import './Footer.component.css';
 
 const Footer = () => {
     return (
         <footer className="footer">
             <Container>
-                <span className="text-muted">&copy; 2017 - 2019</span>
+                <span className="text-muted">Copyright &copy; 2017 - 2019</span>
             </Container>
         </footer>
     )

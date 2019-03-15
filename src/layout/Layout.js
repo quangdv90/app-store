@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import Header from './Header.container';
+import Footer from './Footer.component';
 
 const Layout = ({ children }) => (
     <Fragment>

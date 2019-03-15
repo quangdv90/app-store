@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
-import Notifications from 'react-notification-system-redux';
 import DefaultRoute from './routes/Default.route';
 import Home from './home/Home.container';
 import Register from './auth/Register.container';
@@ -18,10 +16,8 @@ const NotMatch = ({ location }) => {
   );
 };
 
-class App extends Component {
+export default class App extends Component {
   render() {
-    const { notifications } = this.props;
-
     return (
       <div>
         <Switch>
@@ -30,15 +26,7 @@ class App extends Component {
           <DefaultRoute path="/login" component={Login} />
           <Route component={NotMatch} />
         </Switch>
-
-        <Notifications notifications={notifications} />
       </div>
     );
   }
 }
-
-const mapStateToProps = state => ({
-  notifications: state.notifications
-});
-
-export default connect(mapStateToProps, null)(App);
