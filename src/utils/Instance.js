@@ -1,6 +1,14 @@
 import axios from 'axios';
+import store from '../stores';
+import { _signoutAction } from '../auth/Auth.action';
 
-const API_URI = 'http://localhost:6969/api/';
+let API_URI;
+
+if (process.env.NODE_ENV !== 'production') {
+    API_URI = 'http://localhost:6969/api/'
+} else {
+    API_URI = 'http://api.appstore/v1'
+}
 
 export const Instance = axios.create({
     baseURL: `${API_URI}`,
@@ -11,7 +19,10 @@ Instance.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     if (error.response.status === 401) {
-        console.log('Handle 401 Unauthorized here. Maybe redirect to Login via dispatch to logout action');
+        /**
+         * Handle 401 Unauthorized here. Maybe redirect to Login via dispatch to logout action
+         */
+        store.dispatch(_signoutAction());
     }
 
     return Promise.reject(error);

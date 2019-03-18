@@ -4,14 +4,14 @@ import Layout from '../layout/Layout';
 
 const SecureRoute = ({ component: Component, ...rest }) => {
     return (
-        <Route {...rest} render={props => rest.isAuthenticated ? (
+        <Route {...rest} render={matchProps => rest.isAuthenticated ? (
             <Layout>
-                <Component {...props} />
+                <Component {...matchProps} />
             </Layout>
         ) : (
                 <Redirect to={{
                     pathname: '/login',
-                    state: { from: props.location }
+                    state: { from: matchProps.location }
                 }} />
             )} />
     )

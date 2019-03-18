@@ -3,20 +3,25 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
-import { configureStore, history } from './stores';
+import store, { history, persistor } from './stores';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import * as serviceWorker from './serviceWorker';
 
-const store = configureStore();
+const Loading = () => (
+    <div>Loading...</div>
+)
 
 ReactDOM.render(
     <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <App />
-        </ConnectedRouter>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+            <ConnectedRouter history={history}>
+                <App />
+            </ConnectedRouter>
+        </PersistGate>
     </Provider>,
     document.getElementById('root')
 );

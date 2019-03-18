@@ -9,8 +9,8 @@ const Register = (props) => {
     const {
         register: {
             loading,
-            errors,
-            messages
+            error,
+            message
         },
         handleSubmit,
         onRegisterUser } = props;
@@ -23,16 +23,16 @@ const Register = (props) => {
                         <h1 className="display-4 text-center">Sign Up</h1>
                         <p className="lead text-center">Create your account</p>
 
-                        {!isEmpty(messages) ? (
+                        {!isEmpty(message) ? (
                             <UncontrolledAlert color="success">
-                                {`${messages}. Go to `}
+                                {`${message}. Go to `}
                                 <Link to="/login">Login</Link>
                             </UncontrolledAlert>
                         ) : null}
 
-                        {!isEmpty(errors) ? (
+                        {!isEmpty(error) ? (
                             <UncontrolledAlert color="danger">
-                                {errors}
+                                {error}
                             </UncontrolledAlert>
                         ) : null}
 

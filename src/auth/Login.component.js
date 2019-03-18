@@ -26,6 +26,8 @@ const Login = (props) => {
 
     const { from } = props.location.state || { from: { pathname: "/" } };
 
+    console.log(props);
+
     if (isAuthenticated) return <Redirect to={from} />
 
     return (

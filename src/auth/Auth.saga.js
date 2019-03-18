@@ -1,6 +1,7 @@
 import {
     REGISTER_USER,
-    SIGN_IN
+    SIGN_IN,
+    SIGN_OUT
 } from './Auth.constant';
 import {
     _registerUserSuccessAction,
@@ -11,7 +12,7 @@ import {
 } from './Auth.action';
 import { put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { Instance } from '../utils/Instance';
+import { Instance, setAuthToken } from '../utils/Instance';
 
 // Register User
 function* __handleRegisterUser(action) {
@@ -36,6 +37,7 @@ function* _handleSignin(action) {
     try {
         const response = yield Instance.post('/auth/login', user);
         yield put(_signinSuccessAction(response.data));
+        yield setAuthToken(response.data.token);
         yield put(push('/'));
     } catch (err) {
         yield put(_signinFailedAction(err.response.data));
@@ -46,6 +48,14 @@ function* watchSignin() {
     yield takeLatest(SIGN_IN, _handleSignin);
 }
 
-const sagas = [watchRegisterUser, watchSignin];
+// Signout User
+function* watchSignout() {
+    yield takeLatest(SIGN_OUT, function* _handleSignout() {
+        yield setAuthToken(false);
+        yield put(push('/login'));
+    });
+}
+
+const sagas = [watchRegisterUser, watchSignin, watchSignout];
 
 export default sagas;

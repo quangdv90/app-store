@@ -1,19 +1,23 @@
 import {
     REGISTER_USER, REGISTER_USER_SUCCESS, REGISTER_USER_FAILED,
     SIGN_IN, SIGN_IN_SUCCESS, SIGN_IN_FAILED,
-    LOGOUT
+    SIGN_OUT
 } from './Auth.constant';
 
+import isEmpty from 'lodash/isEmpty';
+
+// Initialize Auth State
 const initialState = {
     register: {
         loading: false,
         success: false,
-        errors: null,
-        messages: null
+        error: null,
+        message: null
     },
     signin: {
         loading: false,
         isAuthenticated: false,
+        user: {},
         token: null,
         error: null
     }
@@ -27,8 +31,8 @@ const AuthReducer = (state = initialState, action) => {
                 register: {
                     loading: true,
                     success: false,
-                    errors: null,
-                    messages: null
+                    error: null,
+                    message: null
                 }
             }
 
@@ -38,8 +42,8 @@ const AuthReducer = (state = initialState, action) => {
                 register: {
                     loading: false,
                     success: true,
-                    errors: null,
-                    messages: action.payload.message
+                    error: null,
+                    message: action.payload.message
                 }
             }
 
@@ -49,8 +53,8 @@ const AuthReducer = (state = initialState, action) => {
                 register: {
                     loading: false,
                     success: false,
-                    errors: action.errors.message,
-                    messages: null
+                    error: action.error,
+                    message: null
                 }
             }
 
@@ -60,6 +64,7 @@ const AuthReducer = (state = initialState, action) => {
                 signin: {
                     loading: true,
                     isAuthenticated: false,
+                    user: {},
                     token: null,
                     error: null
                 }
@@ -70,7 +75,8 @@ const AuthReducer = (state = initialState, action) => {
                 ...state,
                 signin: {
                     loading: false,
-                    isAuthenticated: true,
+                    isAuthenticated: !isEmpty(action.payload.user),
+                    user: action.payload.user,
                     token: action.payload.token,
                     error: null
                 }
@@ -82,13 +88,14 @@ const AuthReducer = (state = initialState, action) => {
                 signin: {
                     loading: false,
                     isAuthenticated: false,
+                    user: {},
                     token: null,
                     error: action.error
                 }
             }
 
-        case LOGOUT:
-            return initialState;
+        case SIGN_OUT:
+            return { ...initialState };
 
         default:
             return state; // Incase: State not change

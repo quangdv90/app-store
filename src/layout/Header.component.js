@@ -5,7 +5,11 @@ import {
     Navbar,
     NavbarToggler,
     Nav,
-    NavItem
+    NavItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -20,18 +24,13 @@ class Header extends Component {
         }));
     }
 
-    componentDidMount() {
-        console.log(this.props.auth);
-    }
-
-    componentDidUpdate() {
-        console.log(this.props.auth);
-    }
-
     render() {
         const {
-            signin: { isAuthenticated }
-        } = this.props.auth;
+            auth: {
+                signin: { isAuthenticated, user }
+            },
+            onSignout
+        } = this.props;
 
         let _AuthNavContent = (
             <Fragment>
@@ -46,9 +45,20 @@ class Header extends Component {
 
         if (isAuthenticated) {
             _AuthNavContent = (
-                <NavItem>
-                    <Link className="nav-link" to="/logout">Logout</Link>
-                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                        Wellcome {user.name}!
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        <DropdownItem tag={() => <Link to="/profile" className="dropdown-item">Edit profile</Link>}>
+                            Edit Profile
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem tag="a" href="/signout" onClick={(e) => onSignout(e)}>
+                            Logout
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
             )
         }
 

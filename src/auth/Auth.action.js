@@ -5,7 +5,9 @@ import {
 
     SIGN_IN,
     SIGN_IN_SUCCESS,
-    SIGN_IN_FAILED
+    SIGN_IN_FAILED,
+
+    SIGN_OUT
 } from './Auth.constant';
 
 // Register User
@@ -15,18 +17,16 @@ export const _registerUserAction = (user) => {
         user
     }
 }
-
 export const _registerUserSuccessAction = (payload) => {
     return {
         type: REGISTER_USER_SUCCESS,
         payload
     }
 }
-
-export const _registerUserFailedAction = (errors) => {
+export const _registerUserFailedAction = (error) => {
     return {
         type: REGISTER_USER_FAILED,
-        errors
+        error
     }
 }
 
@@ -47,5 +47,12 @@ export const _signinFailedAction = (error) => {
     return {
         type: SIGN_IN_FAILED,
         error
+    }
+}
+
+// Signout User
+export const _signoutAction = () => {
+    return {
+        type: SIGN_OUT
     }
 }
